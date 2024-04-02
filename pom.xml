@@ -42,7 +42,7 @@ Note: submodules whose artifact must be deployed on Maven Central must activate 
     <name>Hotmoka</name>
   </organization>
 
-  <inceptionYear>2024</inceptionYear>
+  <inceptionYear>2019</inceptionYear>
 
   <licenses>
     <license>
@@ -232,6 +232,14 @@ Note: submodules whose artifact must be deployed on Maven Central must activate 
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+      </modules>
     </profile>
   </profiles>
 
