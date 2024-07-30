@@ -92,7 +92,7 @@ public class Environment {
 		}
 	}
 
-	 /**
+	/**
      * Executes the specified executable in a new read-only transaction, only once,
      * since the transaction is read-only and is never flushed.
      *
@@ -108,7 +108,23 @@ public class Environment {
 		}
 	}
 
-    /**
+	/**
+     * Executes the specified executable in a new exclusive transaction, only once,
+     * since the transaction is exclusive. Only read-only transactions can occur concurrently.
+     *
+     * @param executable transactional executable
+     * @throws ExodusException if the operation fails
+     */
+	public void executeInExclusiveTransaction(Consumer<Transaction> executable) throws ExodusException {
+		try {
+			parent.executeInExclusiveTransaction(txn -> executable.accept(new Transaction(txn)));
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
      * Computes and returns a value by calling the specified computable in a new read-only transaction,
      * only once, since the transaction is read-only and is never flushed.
      *
@@ -145,7 +161,26 @@ public class Environment {
 		}
 	}
 
-    /**
+	/**
+     * Computes and returns a value by calling the specified computable in a new transaction.
+     * The transaction is executed only once, since it is exclusive. Only read-only
+     * transactions can occur concurrently.
+     *
+     * @param <T> the type of the value returned by {@code computable}
+     * @param computable the transactional computable
+     * @return the result of the computable
+     * @throws ExodusException if the operation fails
+     */
+	public <T> T computeInExclusiveTransaction(Function<Transaction, T> computable) throws ExodusException {
+		try {
+			return parent.computeInExclusiveTransaction(txn -> computable.apply(new Transaction(txn)));
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
      * Opens an existing or creates a new store with the specified name, inside the given transaction.
      *
      * @param name the name of the store
