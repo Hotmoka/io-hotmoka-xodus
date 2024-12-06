@@ -50,25 +50,37 @@ public class Environment {
 	 * Creates a Xodus environment at the given directory.
 	 * 
 	 * @param dir the directory
+	 * @throws ExodusException if the creation fails
 	 */
-	public Environment(String dir) {
-		this.parent = jetbrains.exodus.env.Environments.newInstance(dir);
+	public Environment(String dir) throws ExodusException {
+		try {
+			this.parent = jetbrains.exodus.env.Environments.newInstance(dir);
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
 	}
 
 	/**
-	 * Creates a Xodus environment at the given directory with thegiven configuration.
+	 * Creates a Xodus environment at the given directory with the given configuration.
 	 * 
 	 * @param dir the directory
 	 * @param config the configuration
+	 * @throws ExodusException if the creation fails
 	 */
-	public Environment(String dir, EnvironmentConfig config) {
-		this.parent = jetbrains.exodus.env.Environments.newInstance(dir, config.toNative());
+	public Environment(String dir, EnvironmentConfig config) throws ExodusException {
+		try {
+			this.parent = jetbrains.exodus.env.Environments.newInstance(dir, config.toNative());
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
 	}
 
 	/**
 	 * Closes this environment.
 	 * 
-	 * @throws ExodusException if closure fals
+	 * @throws ExodusException if the closure fails
 	 */
 	public void close() throws ExodusException {
 		try {
