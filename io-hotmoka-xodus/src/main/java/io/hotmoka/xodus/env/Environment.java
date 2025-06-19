@@ -1585,6 +1585,7 @@ public class Environment {
 
 	/**
      * Opens an existing or creates a new store with the specified name, inside the given transaction.
+     * It does not allow duplicated keys and supports efficient sequential access of keys.
      *
      * @param name the name of the store
      * @param txn the transaction used to create store
@@ -1594,6 +1595,60 @@ public class Environment {
 	public Store openStoreWithoutDuplicates(String name, Transaction txn) throws ExodusException {
 		try {
 			return new Store(parent.openStore(name, StoreConfig.WITHOUT_DUPLICATES, txn.toNative()));
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
+     * Opens an existing or creates a new store with the specified name, inside the given transaction.
+     * It does not allow duplicated keys and supports efficient random look-up of keys.
+     *
+     * @param name the name of the store
+     * @param txn the transaction used to create store
+     * @return the resulting store instance
+     * @throws ExodusException if the operation fails
+     */
+	public Store openStoreWithoutDuplicatesWithPrefixing(String name, Transaction txn) throws ExodusException {
+		try {
+			return new Store(parent.openStore(name, StoreConfig.WITHOUT_DUPLICATES_WITH_PREFIXING, txn.toNative()));
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
+     * Opens an existing or creates a new store with the specified name, inside the given transaction.
+     * It allows duplicated keys and supports efficient sequential access of keys.
+     *
+     * @param name the name of the store
+     * @param txn the transaction used to create store
+     * @return the resulting store instance
+     * @throws ExodusException if the operation fails
+     */
+	public Store openStoreWithDuplicates(String name, Transaction txn) throws ExodusException {
+		try {
+			return new Store(parent.openStore(name, StoreConfig.WITH_DUPLICATES, txn.toNative()));
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
+     * Opens an existing or creates a new store with the specified name, inside the given transaction.
+     * It allows duplicated keys and supports efficient random look-up of keys.
+     *
+     * @param name the name of the store
+     * @param txn the transaction used to create store
+     * @return the resulting store instance
+     * @throws ExodusException if the operation fails
+     */
+	public Store openStoreWithDuplicatesWithPrefixing(String name, Transaction txn) throws ExodusException {
+		try {
+			return new Store(parent.openStore(name, StoreConfig.WITH_DUPLICATES_WITH_PREFIXING, txn.toNative()));
 		}
 		catch (jetbrains.exodus.ExodusException e) {
 			throw new ExodusException(e);
