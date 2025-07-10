@@ -38,7 +38,7 @@ public class Transaction {
 	 * 
 	 * @return the Xodus transaction adapted by this object
 	 */
-	public jetbrains.exodus.env.Transaction toNative() {
+	jetbrains.exodus.env.Transaction toNative() {
 		return parent;
 	}
 

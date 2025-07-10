@@ -50,13 +50,7 @@ public class Store {
 	 */
 	public boolean put(Transaction txn, ByteIterable key, ByteIterable value) throws ExodusException {
 		try {
-			boolean result = parent.put(txn.toNative(), key.toNative(), value.toNative());
-			if (!result)
-				// this might well be normal, if the pair was not there; it depends on the algorithm;
-				// in any case, it is worth a warning
-				LOGGER.warning("couldn't write key " + key + " into the Xodus store");
-
-			return result;
+			return parent.put(txn.toNative(), key.toNative(), value.toNative());
 		}
 		catch (jetbrains.exodus.ExodusException e) {
 			throw new ExodusException(e);
