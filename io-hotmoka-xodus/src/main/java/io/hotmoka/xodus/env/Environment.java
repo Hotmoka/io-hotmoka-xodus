@@ -107,6 +107,36 @@ public class Environment {
 	}
 
 	/**
+	 * Starts a new exclusive transaction.
+	 * 
+	 * @return the new exclusive transaction
+	 * @throws ExodusException if the operation fails
+	 */
+	public Transaction beginExclusiveTransaction() throws ExodusException {
+		try {
+			return new Transaction(parent.beginExclusiveTransaction());
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
+	 * Starts a new read-only transaction.
+	 * 
+	 * @return the new read-only transaction
+	 * @throws ExodusException if the operation fails
+	 */
+	public Transaction beginReadonlyTransaction() throws ExodusException {
+		try {
+			return new Transaction(parent.beginReadonlyTransaction());
+		}
+		catch (jetbrains.exodus.ExodusException e) {
+			throw new ExodusException(e);
+		}
+	}
+
+	/**
      * Executes the specified executable in a new transaction. If the transaction cannot be flushed
      * at its end, the executable is executed once more until the transaction is finally flushed.
      *
